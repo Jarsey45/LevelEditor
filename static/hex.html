@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width= , initial-scale=1.0">
+  <title>Hex - TEST</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.116.1/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.85.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="js/door3d.js"></script>
+  <script src="js/hex3d.js"></script>
+  <script src="js/settings.js"></script>
+</head>
+
+<body>
+  <div id='root'></div>
+  <script>
+    //SCENE
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+
+
+    //TEXTURES
+    const wallTexture = new THREE.TextureLoader().load("/img/walls.jpg");
+    const floorTexture = new THREE.TextureLoader().load("/img/floor.jpg");
+
+
+    //LIGHT
+    const light = new THREE.AmbientLight(0xffffff, 0.5)
+    light.position.set(0, 300, 300)
+    scene.add(light);
+
+
+    //CAMERA
+    const camera = new THREE.PerspectiveCamera(
+      90, // kąt patrzenia kamery (FOV - field of view)
+      window.innerWidth / window.innerHeight, // proporcje widoku, powinny odpowiadać proporcjom naszego ekranu przeglądarki
+      0.1, // minimalna renderowana odległość
+      10000 // maksymalna renderowana odległość od kamery
+    );
+    camera.position.set(600, 800, 600);
+    camera.lookAt(scene.position);
+
+
+    //RENDERER
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true
+    });
+    renderer.setSize($(window).width(), $(window).height() - 25);
+
+    window.addEventListener('resize', function () {
+      renderer.setSize($(window).width(), $(window).height() - 25);
+    })
+
+
+    //ORBIT CONTROL
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.update();
+
+
+    //MATERIAL
+    const material = new THREE.MeshNormalMaterial({
+      side: THREE.DoubleSide,
+      //wireframe: true,
+
+    });
+    const wallMaterial = new THREE.MeshPhongMaterial({
+      side: THREE.DoubleSide,
+      map: wallTexture
+
+    });
+    const floorMaterial = new THREE.MeshPhongMaterial({
+      side: THREE.DoubleSide,
+      map: floorTexture
+
+    });
+
+
+    //GEOMETRY
+    const geometry = new THREE.BoxGeometry(Settings.scale, Settings.scale, Settings.scale);
+
+    //AXES
+    const axes = new THREE.AxesHelper(1000);
+    scene.add(axes);
+
+
+
+    let hex = new Hex3D(1, 5, 0, 0);
+    scene.add(hex)
+
+
+
+
+    $("#root").append(renderer.domElement);
+
+    function draw() {
+      requestAnimationFrame(draw);
+
+
+
+
+
+
+      camera.lookAt(scene.position);
+      controls.update();
+
+
+      camera.updateProjectionMatrix();
+      renderer.render(scene, camera);
+    }
+    draw();
+  </script>
+</body>
+
+</html>
