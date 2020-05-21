@@ -10,11 +10,12 @@ scene.background = new THREE.Color(0x333333);
 //TEXTURES
 const wallTexture = new THREE.TextureLoader().load("/img/walls.jpg");
 const floorTexture = new THREE.TextureLoader().load("/img/floor.jpg");
+const treasureTexture = new THREE.TextureLoader().load("/img/gold.png");
 //const fireTexture;
 
 
 //LIGHT
-const light = new THREE.AmbientLight(0xffffff, 0.25)
+const light = new THREE.AmbientLight(0xffffff, 0.1)
 light.position.set(0, 300, 300)
 scene.add(light);
 
@@ -39,7 +40,8 @@ renderer.setSize($(window).width(), $(window).height() - 25);
 window.addEventListener('resize', function () {
   renderer.setSize($(window).width(), $(window).height() - 25);
 })
-
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 //ORBIT CONTROL
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -52,8 +54,18 @@ const material = new THREE.MeshNormalMaterial({
   //wireframe: true,
 
 });
+const treasureMaterial = new THREE.MeshPhongMaterial({
+  map: treasureTexture
+});
+const particleMaterial = new THREE.MeshBasicMaterial({
+  color: 0xff6600,
+  transparent: true,
+  opacity: 0.5,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending // kluczowy element zapewniający mieszanie ze sobą kolorów cząsteczek
+});
 const wallMaterial = new THREE.MeshPhongMaterial({ // odbicia swaitel etc
-  //side: THREE.DoubleSide, // chce by sciana nie zaslaniala nam widoku
+  side: THREE.DoubleSide, // chce by sciana nie zaslaniala nam widoku
   map: wallTexture
 
 });
@@ -77,6 +89,9 @@ scene.add(axes);
 
 
 load()
+
+
+
 
 
 
@@ -123,7 +138,7 @@ function load() {
         let x = el.x * (Settings.scale / 2 + Settings.scale / 4);
         let z = offset + (el.z * (Settings.scale / 2 * Math.sqrt(3)));
         //console.log(x, z, offset)
-        let tmp = new Hex3D(el.arrowOut, el.arrowIn, x, z)
+        let tmp = new Hex3D(el.arrowOut, el.arrowIn, x, z, el.type)
         level.push(tmp);
       }
     })
