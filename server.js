@@ -14,7 +14,7 @@ var map = {
       "z": "0",
       "arrowOut": "2",
       "arrowIn": 2,
-      "type": "wall",
+      "type": "gold",
       "odd": "1"
     },
     {
@@ -23,7 +23,7 @@ var map = {
       "z": "0",
       "arrowOut": 2,
       "arrowIn": "5",
-      "type": "wall",
+      "type": "light",
       "odd": "0"
     },
     {
@@ -41,7 +41,7 @@ var map = {
       "z": "2",
       "arrowOut": "4",
       "arrowIn": 0,
-      "type": "wall",
+      "type": "light",
       "odd": "1"
     },
     {
@@ -59,7 +59,7 @@ var map = {
       "z": "2",
       "arrowOut": "0",
       "arrowIn": 2,
-      "type": "wall",
+      "type": "gold",
       "odd": "1"
     }
   ]
