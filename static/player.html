@@ -30,13 +30,13 @@
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x313131);
 
-    //LOADER
-    const loader = new THREE.JSONLoader();
+    // //LOADER
+    // const loader = new THREE.JSONLoader();
 
     //TEXTURES
     const floorTexture = new THREE.TextureLoader().load("/img/floor.jpg");
     const playerTexture = new THREE.TextureLoader().load("/img/LadyDeath1.png");
-    const enemyTexture = new THREE.TextureLoader().load("/img/Icha.pcx");
+    const enemyTexture = new THREE.TextureLoader().load("/img/Icha.png");
 
 
     //LIGHT
@@ -115,6 +115,14 @@
     let player = new Player(0, 0, 0, 5);
     scene.add(player.getContainer());
 
+    let enemies = [];
+    for (let i = 0; i < 10; i++) {
+      let enemy = new Enemy(getRandomInt(-500, 500) * i, 0, getRandomInt(-500, 500) * i, 5);
+      enemies.push(enemy);
+      scene.add(enemy.getContainer());
+    }
+
+
 
 
 
@@ -131,6 +139,12 @@
       player.animate(clock.getDelta());
       player.moveTo(moveToVector);
 
+      //enemy NEEDED
+      for (let enemy of enemies) {
+        enemy.animate(clock.getDelta());
+        enemy.moveTo();
+
+      }
 
 
       //camera.lookAt(scene.position);
@@ -155,7 +169,20 @@
 
       // calculate objects intersecting the picking ray
       let intersects = raycaster.intersectObjects(scene.children);
-      if (intersects[0]) {
+      if (intersects[0] && intersects[0].object.name == 'enemy') {
+        let object = intersects[0].object.userData;
+        object.assignParent(player);
+        for (let f of player.followers) {
+          //console.log(f);
+          object.assignParent(f);
+        }
+        player.assignFollower(object);
+        // console.log(object.parents);
+        // console.log(player.followers)
+
+
+      } else if (intersects[0]) {
+        // console.log(intersects);
         mouseVector = intersects[0].point;
         playerVector = player.container.position;
         moveToVector = mouseVector.clone().sub(playerVector).normalize();
@@ -167,10 +194,18 @@
         )
         player.mesh.rotation.y = angle + Math.PI * 1.5;
 
-
       }
 
     });
+
+
+
+
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
   </script>
 </body>
 
