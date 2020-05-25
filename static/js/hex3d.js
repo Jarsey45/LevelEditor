@@ -24,6 +24,7 @@ class Hex3D {
     //floor
     let floorGeo = new THREE.CylinderGeometry(this.radius / 2, this.radius / 2, 0.1, 6)
     let floor = new THREE.Mesh(floorGeo, floorMaterial);
+    floor.name = 'floor';
     container.add(floor);
     wall.castShadow = true;
 
@@ -50,21 +51,33 @@ class Hex3D {
     switch (content) {
       case "light":
         console.log('light');
-        let fireplace = new Fire(200, particleMaterial, 150);
+        let fireplace = new Fire(200, particleMaterial, 0.75 * Settings.scale);
         //fireplace.container.position.set(container.position.x, container.position.y, container.position.z);
-        fireplace.container.scale.set(0.1, 0.1, 0.1);
+        fireplace.container.scale.set(1, 1, 1);
         container.add(fireplace.container);
         break;
       case "wall":
         console.log('wall')
         break;
       case "gold":
-        let treasure = new Treasure(200);
-        treasure.scale.set(0.09, 0.09, 0.09);
-        treasure.position.y = container.position.y + 3;
+        let treasure = new Treasure(Settings.scale);
+        treasure.scale.set(0.1, 0.1, 0.1);
+        treasure.position.y = container.position.y - 10;
         container.add(treasure);
         break;
+        // case 'enemy':
+        //   let enemy = new Enemy(0, 0, 0, 3);
+        //   console.log(enemy.container.position);
+        //   enemy.qb.position.set(container.position.x, 0, container.position.z);
+        //   enemies.push(enemy);
+        //   container.add(enemy.container);
 
+        //   break;
+        // case 'player':
+        //   player = new Player(0, 60, 0, 3);
+        //   container.add(player.container);
+
+        //   break;
     }
 
     return container

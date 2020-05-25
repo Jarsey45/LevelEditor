@@ -13,7 +13,7 @@ class Fire {
 
   setup() {
     //swiatlo
-    this.light = new THREE.PointLight(0xff6600, 1.5, this.lightSize, 2); //this.size / 20);
+    this.light = new THREE.PointLight(0xff6600, 2.5, this.lightSize, 2); //this.size / 20);
     this.light.position.set(this.container.position.x, 50, this.container.position.z);
     this.light.castShadow = true;
     this.container.add(this.light);

@@ -32,7 +32,7 @@ var map = {
       "z": "1",
       "arrowOut": "3",
       "arrowIn": 5,
-      "type": "wall",
+      "type": "enemy",
       "odd": "1"
     },
     {
@@ -50,7 +50,7 @@ var map = {
       "z": "2",
       "arrowOut": "5",
       "arrowIn": 1,
-      "type": "wall",
+      "type": "enemy",
       "odd": "0"
     },
     {

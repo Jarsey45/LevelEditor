@@ -1,3 +1,3 @@
 var Settings = {
-  scale: 100,
+  scale: 1000,
 }
