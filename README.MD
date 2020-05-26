@@ -12,4 +12,5 @@
   ```
 #### Autor
 
-Copyright (c) 2020 Bartłomiej Kowalczyk
+Copyright (c) 2020 Bartłomiej Kowalczyk 
+#### *** except all img directory  ***
